@@ -137,22 +137,30 @@ namespace SIMULATION {
 		row = 0;
 	}
 
-	bool next(int ROW, bool forcase = false) {
+	bool next(int ROW, int CASE = 0) {
 
 		if (row < 0) { return false; }
-		if (ROW != row) { return next(ROW + 1, forcase); }
+		if (ROW != row) { return next(ROW + 1, CASE); }
 
 		for (; col_row[row] <= 8; col_row[row]++) {
 			if (col_row[row] == 8) { // run out of columns
 				bkColor = RED;
 				row--; // start with previous row
-				return true;
+				if (CASE != 2) {
+					return true;
+				}
+				else {
+					if (row < 0) {
+						restart();
+						return true;
+					}
+				}
 			}
 			pos = row * cols + col_row[row];
 			if (queens[pos]) { // remove existing queen and continue
 				queens[pos] = false;
 				calcAttack();
-				if (!forcase) { // for nextPiece()
+				if (CASE == 0) { // for nextPiece()
 					col_row[row]++;
 					bkColor = BLACK;
 					return true;
@@ -169,22 +177,14 @@ namespace SIMULATION {
 					bkColor = BLACK;
 					row++;
 					col_row[row] = 0;
-					if (!forcase) { // for nextPiece()
+					if (CASE == 0) { // for nextPiece()
 						return true;
 					}
-					bool result = next(row, forcase); // continue with next row
+					bool result = next(row, CASE); // continue with next row
 					if (result) { return true; }
 				}
 			}
 		}
-	}
-
-	void nextPiece() {
-		next(0);
-	}
-
-	void nextCase() {
-		next(0, true);
 	}
 }
 
@@ -221,11 +221,14 @@ int main() {
 					initialize();
 				}
 				if (msg.vkcode == 0x20) { // space
-					SIMULATION::nextCase();
+					SIMULATION::next(0, 1);
+				}
+				if (msg.vkcode == 0x46) { // f
+					SIMULATION::next(0, 2);
 				}
 			}
 			if (msg.message == WM_LBUTTONDOWN) {
-				SIMULATION::nextPiece();
+				SIMULATION::next(0, 0);
 			}
 		}
 
