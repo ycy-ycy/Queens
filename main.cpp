@@ -179,7 +179,7 @@ int main() {
 
 	initgraph(squareSize * cols, squareSize * rows, EX_NOCLOSE);
 
-	BeginBatchDraw;
+	BeginBatchDraw();
 
 	bool running = true;
 
