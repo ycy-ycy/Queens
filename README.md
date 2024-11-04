@@ -26,4 +26,4 @@ Run the `exe` file. Left click to place/remove queens. Press `esc` to exit, `z` 
 
 ## 8 Queens Problem Demo
 
-Run the `8QueensDEMO.exe` file. Left click to show next move. Press `spacebar` to show next case. Press `esc` to exit and `r` to reset.
+Run the `8QueensDEMO.exe` file. Left click to show next move. Press `spacebar` to show next case. Press `f` to show next solution. Press `esc` to exit and `r` to reset.
