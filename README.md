@@ -8,7 +8,7 @@ This project explores several "Queens Problems" involving the placement of queen
 2. **Maximum Non-Attacking Queens**  
    Find the maximum number of queens that can be placed on an `m x n` chessboard such that no two queens threaten each other.
 
-### Configuration
+#### Configuration
 
 In `config.txt`, specify the size of the chessboard and the size of squares and symbols:
 
@@ -20,6 +20,10 @@ QUEEN_SIZE
 ATTACKED_SYMBOL_SIZE
 ```
 
-### Running the simulation
+#### Running the simulation
 
 Run the `exe` file. Left click to place/remove queens. Press `esc` to exit, `z` to undo, and `r` to reset the board.
+
+## 8 Queens Problem Demo
+
+Run the `8QueensDEMO.exe` file. Left click to show next move. Press `spacebar` to show next case. Press `esc` to exit and `r` to reset.
