@@ -24,6 +24,8 @@ ATTACKED_SYMBOL_SIZE
 
 Run the `exe` file. Left click to place/remove queens. Press `esc` to exit, `z` to undo, and `r` to reset the board.
 
-## 8 Queens Problem Demo
+## N Queens Problem Demo
 
-Run the `8QueensDEMO.exe` file. Left click to show next move. Press `spacebar` to show next case. Press `f` to show next solution. Press `esc` to exit and `r` to reset.
+Run the `NQueensDEMO.exe` file. Left click to show next move. Press `spacebar` to show next case. Press `f` to show next solution. Press `esc` to exit and `r` to reset.
+
+`COLS` will be forced to set equal to `ROWS` for the N Queens problem. Otherwise, no solution will be found (obviously).

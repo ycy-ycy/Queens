@@ -1,12 +1,22 @@
 #include <graphics.h>
 #include <vector>
+#include <string>
+#include <fstream>
 
-int rows = 8;
-int cols = 8;
+std::ifstream inputFile("config.txt");
 
-int squareSize = 50;
-int queenSize = 40;
-int attackSize = 40;
+std::string ROWS;
+std::string COLS;
+std::string SQUARESIZE;
+std::string QUEENSIZE;
+std::string ATTACKSIZE;
+
+int rows;
+int cols;
+
+int squareSize;
+int queenSize;
+int attackSize;
 
 bool* queens;
 bool* attack;
@@ -126,33 +136,37 @@ void draw(COLORREF bkColor) {
 }
 
 namespace SIMULATION {
-	int col_row[8];
+	int n;
+	int* col_row;
 	COLORREF bkColor = BLACK;
 	int row = 0;
 	int pos;
 
 	void restart() {
-		memset(col_row, 0, 8 * sizeof(int));
+		memset(col_row, 0, n * sizeof(int));
 		bkColor = BLACK;
 		row = 0;
 	}
 
-	bool next(int ROW, int CASE = 0) {
+	void next(int ROW, int CASE = 0) {
 
-		if (row < 0) { return false; }
+		if (row < 0) { return; }
 		if (ROW != row) { return next(ROW + 1, CASE); }
 
-		for (; col_row[row] <= 8; col_row[row]++) {
-			if (col_row[row] == 8) { // run out of columns
+		for (; col_row[row] <= n; col_row[row]++) {
+			if (col_row[row] == n) { // run out of columns
 				bkColor = RED;
 				row--; // start with previous row
 				if (CASE != 2) {
-					return true;
+					if (row < 0) {
+						restart();
+					}
+					return;
 				}
 				else {
 					if (row < 0) {
 						restart();
-						return true;
+						return;
 					}
 				}
 			}
@@ -163,25 +177,24 @@ namespace SIMULATION {
 				if (CASE == 0) { // for nextPiece()
 					col_row[row]++;
 					bkColor = BLACK;
-					return true;
+					return;
 				}
 			}
 			else {
 				if (!attack[pos]) { // safe to add
 					queens[pos] = true;
 					calcAttack();
-					if (row == 7) { // passed
+					if (row + 1 == n) { // passed
 						bkColor = GREEN;
-						return true;
+						return;
 					}
 					bkColor = BLACK;
 					row++;
 					col_row[row] = 0;
 					if (CASE == 0) { // for nextPiece()
-						return true;
+						return;
 					}
-					bool result = next(row, CASE); // continue with next row
-					if (result) { return true; }
+					return next(row, CASE); // continue with next row
 				}
 			}
 		}
@@ -195,6 +208,23 @@ void initialize() {
 }
 
 int main() {
+
+	std::getline(inputFile, ROWS);
+	std::getline(inputFile, COLS);
+	std::getline(inputFile, SQUARESIZE);
+	std::getline(inputFile, QUEENSIZE);
+	std::getline(inputFile, ATTACKSIZE);
+
+	rows = std::stoi(ROWS);
+	cols = rows;
+	squareSize = std::stoi(SQUARESIZE);
+	queenSize = std::stoi(QUEENSIZE);
+	attackSize = std::stoi(ATTACKSIZE);
+
+	inputFile.close();
+
+	SIMULATION::n = rows;
+	SIMULATION::col_row = new int[rows];
 
 	queens = new bool[rows * cols];
 	attack = new bool[rows * cols];
@@ -246,6 +276,7 @@ int main() {
 
 	delete[] queens;
 	delete[] attack;
+	delete[] SIMULATION::col_row;
 
 	return 0;
 }
